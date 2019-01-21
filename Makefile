@@ -6,7 +6,7 @@
 #    By: lportay <lportay@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2019/01/04 14:29:46 by lportay          ###   ########.fr        #
+#    Updated: 2019/01/21 18:49:27 by lportay          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,9 +17,8 @@ SRCDIR= src/
 vpath %.c $(SRCDIR)
 vpath %.h includes/
 
-CC= gcc-7 
 CFLAGS= -Wall -Wextra -Werror $(INCLUDE)
-DEBUG=sanitize
+DEBUG=no
 OPT=LIB
 ARCH:= $(shell uname)
 
@@ -40,9 +39,9 @@ endif
 INCLUDE=\
 -Iincludes\
 
-HEADERS= filler.h\
+HEADERS= malloc.h\
 
-SRC=
+SRC=b.c
 
 OBJDIR= obj
 OBJ= $(addprefix $(OBJDIR)/, $(SRC:%.c=%.o))
@@ -60,12 +59,16 @@ SYMLINK=libft_malloc.so
 GREEN="\033[32m"
 RESET="\033[0m"
 
-all: $(LIB) $(NAME)
+# $(LIB)
 
-$(NAME): $(LIBDIR)$(LIB) $(OBJ)
-	$(CC) $(CFLAGS) -o $@ $(OBJ) -L$(LIBDIR) -lft
+all: $(NAME)
+
+# $(LIBDIR)$(LIB)
+
+$(NAME): $(OBJ)
+	$(CC) $(CFLAGS) -shared -o $@ $(OBJ) # -L$(LIBDIR) -lft
 	@echo $(GREEN)$(NAME)" Successfully created"$(RESET)
-	@ln -s $(NAME) $(SYMLINK)
+	@ln -fs $(NAME) $(SYMLINK)
 
 $(OBJDIR)/%.o: %.c $(HEADERS) | $(OBJDIR)
 	$(COMPILE.c) $< -o $@ $(INCLUDE)
@@ -92,8 +95,7 @@ ifeq ($(OPT), LIB)
 	@$(MAKE) clean -C $(LIBDIR)
 endif
 	$(RM) -r $(OBJDIR) 
-	@$(RM) test
-	@$(RM) a.out
+	@$(RM) test a.out
 	@$(RM) -r test.dSYM
 
 fclean: clean
@@ -101,7 +103,7 @@ fclean: clean
 ifeq ($(OPT), LIB)
 	@$(MAKE) fclean -C $(LIBDIR)
 endif		
-	$(RM) $(NAME)
+	$(RM) $(NAME) $(SYMLINK)
 	@$(RM) -r $(NAME).dSYM
 
 re : fclean all
