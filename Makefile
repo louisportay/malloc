@@ -6,7 +6,7 @@
 #    By: lportay <lportay@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2019/01/21 18:49:27 by lportay          ###   ########.fr        #
+#    Updated: 2019/01/22 17:33:51 by lportay          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,7 +41,7 @@ INCLUDE=\
 
 HEADERS= malloc.h\
 
-SRC=b.c
+SRC= malloc.c\
 
 OBJDIR= obj
 OBJ= $(addprefix $(OBJDIR)/, $(SRC:%.c=%.o))
@@ -69,6 +69,10 @@ $(NAME): $(OBJ)
 	$(CC) $(CFLAGS) -shared -o $@ $(OBJ) # -L$(LIBDIR) -lft
 	@echo $(GREEN)$(NAME)" Successfully created"$(RESET)
 	@ln -fs $(NAME) $(SYMLINK)
+
+exec:  $(OBJ)
+	$(CC) $(CFLAGS) -o exec $(OBJ)
+	@echo $(GREEN)" exec Successfully created"$(RESET)
 
 $(OBJDIR)/%.o: %.c $(HEADERS) | $(OBJDIR)
 	$(COMPILE.c) $< -o $@ $(INCLUDE)

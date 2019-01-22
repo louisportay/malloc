@@ -1,3 +1,6 @@
 test
 obj/
 *.so
+a.out
+a.c
+exec
