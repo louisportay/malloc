@@ -6,7 +6,7 @@
 /*   By: lportay <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/21 14:36:25 by lportay           #+#    #+#             */
-/*   Updated: 2019/01/22 19:00:26 by lportay          ###   ########.fr       */
+/*   Updated: 2019/01/23 15:04:44 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@
 ** On Mac OS X, source the file '_setup.sh' to load your malloc on the session
 */
 
+//TODO
+// 'static' les ofnctions
 #include <sys/mman.h>
 #include <stdlib.h>
 #include <stdio.h>//
@@ -33,8 +35,9 @@
 
 // s -> size
 // rs -> real size
-#define DUMP_MEM(M) printf("%p\n", M);
-#define LEN(L) printf("%lu\n", L);
+#define DEBUG printf("DEBUG\n")
+#define DUMP_MEM(M) printf("%p\n", M)
+#define LEN(L) printf("%lu\n", L)
 
 #define PRE_ALLOC 0xC99000
 //	(2 << 9 + 2 << 16) * 100

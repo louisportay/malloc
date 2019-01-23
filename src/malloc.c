@@ -6,7 +6,7 @@
 /*   By: lportay <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 15:00:57 by lportay           #+#    #+#             */
-/*   Updated: 2019/01/22 19:00:15 by lportay          ###   ########.fr       */
+/*   Updated: 2019/01/23 18:28:46 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	init_mem(t_mem *m)
 
 	set_len(m, TINY_LEN);
 	set_prev(m, NULL);
-	set_next(m, m + TINY_LEN + 1);
+	set_next(m, m + TINY_LEN);
 
 	c = get_next(m);
 
@@ -56,7 +56,7 @@ void	init_mem(t_mem *m)
 	set_prev(c, m);
 	set_next(c, NULL);
 
-	assert(c - m == TINY_LEN + 1);
+	assert(c - m == TINY_LEN);
 	assert(get_len(c) == SMALL_LEN);
 }
 
@@ -70,23 +70,41 @@ int		alloc_mem(t_mem **m)
 
 void	shorten(t_mem *m, size_t rs)
 {
-	// sauver la len, le prev et le next
-	// aller a l'offset rs + 1
-	// set la len a len - rs
-	// reset prev et next
+	size_t	len;
+	void	*prev;
+	void	*next;
+	void	*p;
+
+	len = get_len(m);
+	prev = get_prev(m);
+	next = get_next(m);
+
+	set_next(m, m + rs);
+
+	m += rs;
+	set_len(m, len - rs);
+	set_prev(m, prev);
+	set_next(m, next);
+
+	if ((p = get_prev(m)) != NULL)
+		set_next(p, m);
+	if ((p = get_next(m)) != NULL)
+		set_prev(p, m);
 }
 
 void	cut(t_mem *m)
 {
-	//if prev
-	//	prev->next = m->next
-	//if next
-	//	next->prev = m->prev
+	t_mem *p;
+
+	if ((p = get_prev(m)) != NULL)
+		set_next(p, get_next(m));
+	if ((p = get_next(m)) != NULL)
+		set_prev(p, get_prev(m));
 }
 
 void	*get_mem(t_mem **mem, size_t s)
 {
-	t_mem *m;
+	t_mem	*m;
 
 	m = *mem;
 	if (s < MIN_ALLOC)
@@ -95,27 +113,53 @@ void	*get_mem(t_mem **mem, size_t s)
 		s += sizeof(size_t);
 
 	while (get_len(m) < s && m)
-		m = get_next(m);	
+		m = get_next(m);
 	if (!m)
+		// defragmenter et relancer la recherche
 		return (NULL);
 	if (get_len(m) == s)
-		cut(m, s);
+		cut(m);
+	else
+		shorten(m, s);
 
 	if (m == *mem)
+	{
 		*mem = get_next(*mem);
-	
+		assert(*mem - m == (long)s);
+	}
+	return (m);
+}
+
+void	*large_alloc(t_mem **mem, size_t s)
+{
+	if (*mem)
+	{
+		t_mem *m;
+
+		m = *mem;
+		// implementer best-fit 
+
+		//while (get_len(m) < s && m)
+		//	m = get_next(m);
+
+		if (m)
+		{
+			// cut and return
+		}
+
+	}
+	else
+		// mmap +8 des familles, set la len et return
 }
 
 void	*_malloc(size_t size)
 {
-	(void)size;
-
 	static t_mem	*t_free;
 	static t_mem	*s_free;
 	static t_mem	*l_free;
 	void			*r;
 
-	if (free == NULL)
+	if (t_free == NULL)
 	{
 		if (alloc_mem(&t_free) == -1)
 			return (NULL);
@@ -127,20 +171,59 @@ void	*_malloc(size_t size)
 	else if (size <= SMALL)
 		r = get_mem(&s_free, size);
 	else
-
-	// look for 'size' or larger blocks in *free* list
-		// if exact found
-			// remove from free list and return it
-			// put 'size' block in *alloced* list
-		// if larger found
-			// split, remove 'size' block from free list and return it
-			// the other block is put back on the free list
-			// put 'size' block in *alloced* list
-
-	return (NULL);//
+		r = large_alloc(&l_free, size);
+	return (r + sizeof(size_t));//
 }
+
+#include <string.h> //
 
 int main(void)
 {
-	_malloc(0);
+	void *s = _malloc(16);
+	 s = _malloc(16);
+	 s = _malloc(16);
+	 s = _malloc(16);
+	 s = _malloc(16);
+	 s = _malloc(16);
+	 s = _malloc(16);
+	 s = _malloc(16);
+	 s = _malloc(16);
+	 s = _malloc(16);
+	 s = _malloc(16);
+	 s = _malloc(16);
+	 s = _malloc(16);
+	 s = _malloc(16);
+	 s = _malloc(16);
+	 s = _malloc(16);
+	 s = _malloc(16);
+	 s = _malloc(16);
+	 s = _malloc(16);
+	 s = _malloc(16);
+	 s = _malloc(16);
+	 s = _malloc(16);
+	 s = _malloc(16);
+	 s = _malloc(16);
+	 s = _malloc(16);
+	 s = _malloc(16);
+	 s = _malloc(16);
+	 s = _malloc(16);
+	 s = _malloc(16);
+	 s = _malloc(16);
+	 s = _malloc(16);
+	 s = _malloc(16);
+	 s = _malloc(16);
+	 s = _malloc(16);
+	 s = _malloc(16);
+	 s = _malloc(16);
+	 s = _malloc(16);
+	 s = _malloc(16);
+	 s = _malloc(16);
+	 s = _malloc(16);
+	 s = _malloc(16);
+	 s = _malloc(16);
+	DUMP_MEM(s);
+	void *q = _malloc(16);
+	DUMP_MEM(q);
+	strcpy(q, "0123456789");
+	printf("%s\n", q);
 }
