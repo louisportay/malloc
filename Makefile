@@ -6,7 +6,7 @@
 #    By: lportay <lportay@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2019/01/22 17:33:51 by lportay          ###   ########.fr        #
+#    Updated: 2019/01/24 15:41:53 by lportay          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ vpath %.c $(SRCDIR)
 vpath %.h includes/
 
 CFLAGS= -Wall -Wextra -Werror $(INCLUDE)
-DEBUG=no
+DEBUG=sanitize
 OPT=LIB
 ARCH:= $(shell uname)
 
@@ -42,6 +42,9 @@ INCLUDE=\
 HEADERS= malloc.h\
 
 SRC= malloc.c\
+	 extract.c\
+	 large.c\
+	 macro.c\
 
 OBJDIR= obj
 OBJ= $(addprefix $(OBJDIR)/, $(SRC:%.c=%.o))

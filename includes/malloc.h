@@ -6,7 +6,7 @@
 /*   By: lportay <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/21 14:36:25 by lportay           #+#    #+#             */
-/*   Updated: 2019/01/23 15:04:44 by lportay          ###   ########.fr       */
+/*   Updated: 2019/01/24 15:40:42 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,19 @@
 ** On Mac OS X, source the file '_setup.sh' to load your malloc on the session
 */
 
-//TODO
-// 'static' les ofnctions
 #include <sys/mman.h>
 #include <stdlib.h>
 #include <stdio.h>//
 #include <assert.h>//
+
+//
+#define SET_PREV(M, V)	*(void **)(M + sizeof(void *)) = V
+#define GET_PREV(M)		*(void **)(M + sizeof(void *))
+#define SET_NEXT(M, V)	*(void **)(M + (sizeof(void *) << 1)) = V
+#define GET_NEXT(M)		*(void **)(M + (sizeof(void *) << 1))
+#define SET_LEN(M, L)	*(size_t *)M = L
+#define GET_LEN(M)		*((size_t *)M)
+//
 
 // s -> size
 // rs -> real size
@@ -41,7 +48,6 @@
 
 #define PRE_ALLOC 0xC99000
 //	(2 << 9 + 2 << 16) * 100
-
 #define SMALL_LEN 0xC80000
 // (2 << 16) * 100
 #define TINY_LEN 0x19000
@@ -61,5 +67,18 @@ void	free(void *ptr);
 void	*malloc(size_t size);
 void	*realloc(void *ptr, size_t size);
 void	show_alloc_mem();
+
+
+void	set_prev(t_mem *m, void *v);
+t_mem	*get_prev(t_mem *m);
+void	set_next(t_mem *m, void *v);
+t_mem	*get_next(t_mem *m);
+void	set_len(t_mem *m, size_t len);
+size_t	get_len(t_mem *m);
+
+void	shorten(t_mem *m, size_t rs);
+void	cut(t_mem *m);
+
+void	*large_alloc(t_mem **mem, size_t s);
 
 #endif
