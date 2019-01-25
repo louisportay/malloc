@@ -6,7 +6,7 @@
 /*   By: lportay <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/21 14:36:25 by lportay           #+#    #+#             */
-/*   Updated: 2019/01/24 15:40:42 by lportay          ###   ########.fr       */
+/*   Updated: 2019/01/25 15:56:54 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@
 #define GET_PREV(M)		*(void **)(M + sizeof(void *))
 #define SET_NEXT(M, V)	*(void **)(M + (sizeof(void *) << 1)) = V
 #define GET_NEXT(M)		*(void **)(M + (sizeof(void *) << 1))
+#define ADD_LEN(M, L)	*(size_t *)M += L
 #define SET_LEN(M, L)	*(size_t *)M = L
 #define GET_LEN(M)		*((size_t *)M)
 //
@@ -44,6 +45,7 @@
 // rs -> real size
 #define DEBUG printf("DEBUG\n")
 #define DUMP_MEM(M) printf("%p\n", M)
+#define DUMP_MEM_BR(S, M) printf("%s %p\n", S, M)
 #define LEN(L) printf("%lu\n", L)
 
 #define PRE_ALLOC 0xC99000
@@ -63,18 +65,28 @@
 
 typedef void t_mem;
 
+struct s_mem
+{
+	t_mem *tiny;
+	t_mem *small;
+	t_mem *large;
+};
+
+extern struct s_mem g_m;
+
 void	free(void *ptr);
 void	*malloc(size_t size);
 void	*realloc(void *ptr, size_t size);
 void	show_alloc_mem();
-
 
 void	set_prev(t_mem *m, void *v);
 t_mem	*get_prev(t_mem *m);
 void	set_next(t_mem *m, void *v);
 t_mem	*get_next(t_mem *m);
 void	set_len(t_mem *m, size_t len);
+void	add_len(t_mem *m, size_t len);
 size_t	get_len(t_mem *m);
+int		adj_mem(t_mem *m1, t_mem *m2);
 
 void	shorten(t_mem *m, size_t rs);
 void	cut(t_mem *m);

@@ -6,11 +6,13 @@
 /*   By: lportay <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 15:00:57 by lportay           #+#    #+#             */
-/*   Updated: 2019/01/24 15:31:36 by lportay          ###   ########.fr       */
+/*   Updated: 2019/01/25 16:01:27 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "malloc.h"
+
+struct s_mem g_m;
 
 static void	init_mem(t_mem *m)
 {
@@ -66,27 +68,23 @@ void	*get_mem(t_mem **mem, size_t s)
 	return (m);
 }
 
-void	*_malloc(size_t size)
+void	*malloc(size_t size)
 {
-	static t_mem	*t_free;
-	static t_mem	*s_free;
-	static t_mem	*l_free;
 	void			*r;
 
-	if (t_free == NULL)
+	if (g_m.tiny == NULL)
 	{
-		if (alloc_mem(&t_free) == -1)
+		if (alloc_mem(&g_m.tiny) == -1)
 			return (NULL);
-		init_mem(t_free);
-		s_free = get_next(t_free);
+		init_mem(g_m.tiny);
+		g_m.small = get_next(g_m.tiny);
 	}
 	if (size <= TINY)
-		r = get_mem(&t_free, size);
+		r = get_mem(&g_m.tiny, size);
 	else if (size <= SMALL)
-		r = get_mem(&s_free, size);
+		r = get_mem(&g_m.small, size);
 	else
-		r = large_alloc(&l_free, size);
-
+		r = large_alloc(&g_m.large, size);
 	return (r + sizeof(size_t));
 }
 
@@ -94,19 +92,9 @@ void	*_malloc(size_t size)
 
 int main(void)
 {
-	void *s = _malloc(SMALL + 1);
-//	 s = _malloc(16);
-//	 s = _malloc(16);
-//	 s = _malloc(16);
-//	 s = _malloc(16);
-//	 s = _malloc(16);
-//	 s = _malloc(16);
-//	 s = _malloc(16);
-//	 s = _malloc(16);
-//	 s = _malloc(16);
+	void *s = malloc(16);
 	DUMP_MEM(s);
-//	void *q = _malloc(16);
-//	DUMP_MEM(q);
-	strcpy(s, "0123456789");
-	printf("%s\n", s);
+	free(s);
+	s = malloc(16);
+	DUMP_MEM(s);
 }
