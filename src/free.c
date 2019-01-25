@@ -6,7 +6,7 @@
 /*   By: lportay <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/23 18:29:34 by lportay           #+#    #+#             */
-/*   Updated: 2019/01/25 15:59:02 by lportay          ###   ########.fr       */
+/*   Updated: 2019/01/25 18:55:00 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int			soft_defragment(t_mem *prev, t_mem *p, t_mem *next)
 	return (0);
 }
 
-void	handle_end_block(t_mem *m, t_mem *p)
+static void	handle_end_block(t_mem *m, t_mem *p)
 {
 	t_mem *iter;
 
@@ -99,7 +99,25 @@ void	release_mem(t_mem **mem, t_mem *p)
 		set_next(p, m);
 	}
 	if (p < *mem)
-		*mem = p
+		*mem = p;
+}
+
+void	release_large(t_mem **mem, t_mem *p)
+{
+	if (get_len(p) > LARGE_THRESHOLD)
+		munmap(p, get_len(p));
+	else
+	{
+		if (*mem == NULL)
+			set_next(p, NULL);
+		else
+		{
+			set_next(p, *mem);
+			set_prev(*mem, p);
+		}
+			set_prev(p, NULL);
+			*mem = p;
+	}
 }
 
 void	free(void *ptr)
@@ -109,11 +127,15 @@ void	free(void *ptr)
 	if (!ptr)
 		return ;
 	ptr -= sizeof(size_t);
+
+	if (getenv("MallocTrackMemory"))
+		pop_alloc(&g_m.tracked, ptr);
+
 	l = get_len(ptr);
 	if (l <= TINY)
 		release_mem(&g_m.tiny, ptr);
 	else if (l <= SMALL)
 		release_mem(&g_m.small, ptr);
-//	else
-//		release_large(&g_m.large);
+	else
+		release_large(&g_m.large, ptr);
 }

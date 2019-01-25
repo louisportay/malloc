@@ -4,3 +4,4 @@ obj/
 a.out
 a.c
 exec
+malloc_stress

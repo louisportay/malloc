@@ -6,7 +6,7 @@
 #    By: lportay <lportay@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2019/01/25 15:54:11 by lportay          ###   ########.fr        #
+#    Updated: 2019/01/25 19:41:00 by lportay          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,6 +47,7 @@ SRC= malloc.c\
 	 macro.c\
 	 free.c\
 	 show.c\
+	 track.c\
 
 OBJDIR= obj
 OBJ= $(addprefix $(OBJDIR)/, $(SRC:%.c=%.o))
