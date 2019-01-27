@@ -6,7 +6,7 @@
 /*   By: lportay <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/23 18:29:34 by lportay           #+#    #+#             */
-/*   Updated: 2019/01/25 18:55:00 by lportay          ###   ########.fr       */
+/*   Updated: 2019/01/27 19:30:32 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ void	free(void *ptr)
 		return ;
 	ptr -= sizeof(size_t);
 
-	if (getenv("MallocTrackMemory"))
+	if (getenv("MallocTrackMemory") && g_m.tracked)
 		pop_alloc(&g_m.tracked, ptr);
 
 	l = get_len(ptr);

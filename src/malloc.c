@@ -6,7 +6,7 @@
 /*   By: lportay <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 15:00:57 by lportay           #+#    #+#             */
-/*   Updated: 2019/01/25 19:40:20 by lportay          ###   ########.fr       */
+/*   Updated: 2019/01/27 20:25:12 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,10 @@ static void	init_mem(t_mem *m)
 
 static int		alloc_mem(void)
 {
-	g_m.pre_alloc = mmap(NULL, PRE_ALLOC, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANON, -1, 0);
+	g_m.pre_alloc = mmap(NULL, PRE_ALLOC_LEN, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANON, -1, 0);
 	if (getenv("MallocTrackMemory"))
 	{
-		g_m.tracked = mmap(NULL, TRACKLIST, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANON, -1, 0);
+		g_m.tracked = mmap(NULL, TRK_LEN, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANON, -1, 0);
 		if (g_m.tracked == MAP_FAILED)
 			return (-1);
 		set_val(g_m.tracked, NULL);
@@ -76,7 +76,7 @@ void	*get_mem(t_mem **mem, size_t s)
 
 void	*malloc(size_t size)
 {
-	void			*r;
+	void	*r;
 
 	if (g_m.pre_alloc == NULL)
 	{
@@ -98,10 +98,10 @@ void	*malloc(size_t size)
 	else
 		r = large_alloc(&g_m.large, size);
 
-	if (getenv("MallocTrackMemory"))
-		push_alloc(&g_m.tracked, r);
+	if (getenv("MallocTrackMemory") && g_m.tracked)
+		push_alloc(g_m.tracked, r);
 
-	return (r + sizeof(size_t));
+	return (!r ? NULL : r + sizeof(size_t));
 }
 
 #include <string.h> //

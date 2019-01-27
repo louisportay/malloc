@@ -6,10 +6,9 @@
 /*   By: lportay <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/24 15:10:53 by lportay           #+#    #+#             */
-/*   Updated: 2019/01/24 15:42:13 by lportay          ###   ########.fr       */
+/*   Updated: 2019/01/27 15:57:40 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "malloc.h"
 
@@ -77,6 +76,8 @@ void	*large_alloc(t_mem **mem, size_t s)
 	else
 	{
 	   r = mmap(NULL, s, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANON, -1, 0);
+	   if (r == MAP_FAILED)
+		   return (NULL);
 	   set_len(r, s);
 	   return (r);
 	}

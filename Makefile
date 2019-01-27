@@ -6,7 +6,7 @@
 #    By: lportay <lportay@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2019/01/25 19:41:00 by lportay          ###   ########.fr        #
+#    Updated: 2019/01/27 20:34:08 by lportay          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,6 +38,9 @@ endif
 
 INCLUDE=\
 -Iincludes\
+-I$(LIBDIR)bridge\
+-I$(LIBDIR)is\
+-I$(LIBDIR)buf\
 
 HEADERS= malloc.h\
 
@@ -65,14 +68,11 @@ SYMLINK=libft_malloc.so
 GREEN="\033[32m"
 RESET="\033[0m"
 
-# $(LIB)
 
-all: $(NAME)
+all: $(LIB) $(NAME)
 
-# $(LIBDIR)$(LIB)
-
-$(NAME): $(OBJ)
-	$(CC) $(CFLAGS) -shared -o $@ $(OBJ) # -L$(LIBDIR) -lft
+$(NAME): $(LIBDIR)$(LIB) $(OBJ)
+	$(CC) $(CFLAGS) -shared -o $@ $(OBJ) -L$(LIBDIR) -lft
 	@echo $(GREEN)$(NAME)" Successfully created"$(RESET)
 	@ln -fs $(NAME) $(SYMLINK)
 
@@ -92,8 +92,8 @@ $(LIB):
 $(LIBDIR)$(LIB):
 	@$(MAKE) -C $(LIBDIR)
 
-main: #$(LIB)
-	$(CC) $(CFLAGS) -o test $(main) #-L$(LIBDIR) -lft
+main: $(LIB)
+	$(CC) $(CFLAGS) -o test $(main) -L$(LIBDIR) -lft
 	-rm -f $(main:.c=.o)
 
 tags:

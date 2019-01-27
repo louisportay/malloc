@@ -6,7 +6,7 @@
 /*   By: lportay <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/21 14:36:25 by lportay           #+#    #+#             */
-/*   Updated: 2019/01/25 20:15:32 by lportay          ###   ########.fr       */
+/*   Updated: 2019/01/27 20:28:39 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,9 @@
 #include <stdio.h>//
 #include <assert.h>//
 
+#include "bridge.h"
+#include "buf.h"
+
 //
 #define SET_PREV(M, V)	*(void **)(M + sizeof(void *)) = V
 #define GET_PREV(M)		*(void **)(M + sizeof(void *))
@@ -55,7 +58,7 @@
 #define DUMP_MEM_BR(S, M) printf("%s %p\n", S, M)
 #define LEN(L) printf("%lu\n", L)
 
-#define PRE_ALLOC 0xC99000
+#define PRE_ALLOC_LEN 0xC99000
 //	(2 << 9 + 2 << 16) * 100
 #define SMALL_LEN 0xC80000
 // (2 << 16) * 100
@@ -67,8 +70,7 @@
 // 8 bytes to store next
 // 8 bytes for alignment
 
-#define TRACKLIST 0x2000
-//8192
+#define TRK_LEN 0x2000
 // 8192 / 32 = 256 allocations
 
 #define LARGE_THRESHOLD 0x40000
@@ -120,8 +122,9 @@ void	*large_alloc(t_mem **mem, size_t s);
 void	show_alloc_mem();
 void	set_val(t_mem *m, t_mem *v);
 t_mem	*get_val(t_mem *m);
-void	push_alloc(t_mem **busy, t_mem *m);
-void	pop_alloc(t_mem **busy, t_mem *m);
-void	sort_alloc(t_mem **busy);
+t_mem	*next_alloc(t_mem *m);
+void	push_alloc(t_mem *busy, t_mem *m);
+void	pop_alloc(t_mem *busy, t_mem *m);
+void	sort_alloc(t_mem *busy);
 
 #endif
