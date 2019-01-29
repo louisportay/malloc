@@ -1,3 +1,4 @@
+test.dSYM
 test
 obj/
 *.so
@@ -5,3 +6,4 @@ a.out
 a.c
 exec
 malloc_stress
+libft/

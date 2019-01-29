@@ -6,7 +6,7 @@
 /*   By: lportay <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 15:00:57 by lportay           #+#    #+#             */
-/*   Updated: 2019/01/27 20:25:12 by lportay          ###   ########.fr       */
+/*   Updated: 2019/01/29 12:25:01 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,7 @@ void	*malloc(size_t size)
 
 	if (size < MIN_ALLOC)
 		size = MIN_ALLOC;
-	else
-		size += sizeof(size_t);
+	size += sizeof(size_t);
 
 	if (size <= TINY)
 		r = get_mem(&g_m.tiny, size);
@@ -104,19 +103,8 @@ void	*malloc(size_t size)
 	return (!r ? NULL : r + sizeof(size_t));
 }
 
-#include <string.h> //
-
 int main(void)
 {
-	void *s = malloc(16);
+	void *s = malloc(43);
 	free(s);
-	void *q = malloc(16);
-	assert(s == q);
-	void *p = malloc(SMALL);
-	free(p);
-	void *t = malloc(SMALL);
-	assert(p == t);
-	//free(r);
-	//DUMP_MEM(g_m.large);
-	//DUMP_MEM(get_next(g_m.large));
 }

@@ -6,7 +6,7 @@
 /*   By: lportay <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/21 14:36:25 by lportay           #+#    #+#             */
-/*   Updated: 2019/01/27 20:28:39 by lportay          ###   ########.fr       */
+/*   Updated: 2019/01/28 19:53:40 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@
 
 #include "bridge.h"
 #include "buf.h"
+#include "mem.h"
 
 //
 #define SET_PREV(M, V)	*(void **)(M + sizeof(void *)) = V
@@ -64,11 +65,10 @@
 // (2 << 16) * 100
 #define TINY_LEN 0x19000
 // (2 << 9) * 100
-#define MIN_ALLOC 32
-// 8 bytes to store len
+#define MIN_ALLOC 16
 // 8 bytes to store prev
 // 8 bytes to store next
-// 8 bytes for alignment
+// 8 bytes will automatically be added to store len
 
 #define TRK_LEN 0x2000
 // 8192 / 32 = 256 allocations

@@ -6,7 +6,7 @@
 #    By: lportay <lportay@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2019/01/27 20:34:08 by lportay          ###   ########.fr        #
+#    Updated: 2019/01/28 19:53:51 by lportay          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,6 +41,7 @@ INCLUDE=\
 -I$(LIBDIR)bridge\
 -I$(LIBDIR)is\
 -I$(LIBDIR)buf\
+-I$(LIBDIR)mem\
 
 HEADERS= malloc.h\
 
@@ -51,6 +52,7 @@ SRC= malloc.c\
 	 free.c\
 	 show.c\
 	 track.c\
+	 xalloc.c\
 
 OBJDIR= obj
 OBJ= $(addprefix $(OBJDIR)/, $(SRC:%.c=%.o))
@@ -76,8 +78,8 @@ $(NAME): $(LIBDIR)$(LIB) $(OBJ)
 	@echo $(GREEN)$(NAME)" Successfully created"$(RESET)
 	@ln -fs $(NAME) $(SYMLINK)
 
-exec:  $(OBJ)
-	$(CC) $(CFLAGS) -o exec $(OBJ)
+exec:  $(LIBDIR)$(LIB) $(OBJ)
+	$(CC) $(CFLAGS) -o exec $(OBJ) -L$(LIBDIR) -lft
 	@echo $(GREEN)" exec Successfully created"$(RESET)
 
 $(OBJDIR)/%.o: %.c $(HEADERS) | $(OBJDIR)

@@ -6,7 +6,7 @@
 /*   By: lportay <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/25 15:52:59 by lportay           #+#    #+#             */
-/*   Updated: 2019/01/27 20:40:14 by lportay          ###   ########.fr       */
+/*   Updated: 2019/01/29 12:22:09 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ static void	err(char err)
 ** the hexadecimal representation in it
 **
 */
+
 char	*addr(char *s, void *ptr)
 {
 	unsigned long	m;
@@ -62,7 +63,7 @@ char	*len(char *s, size_t len)
 	return (s);
 }
 
-void	*iter_tracked_mem(t_mem *m, size_t limit, t_buf *b, size_t *bytes)
+static void	*iter_tracked_mem(t_mem *m, size_t limit, t_buf *b, size_t *bytes)
 {
 	char	s[32];
 
@@ -74,7 +75,7 @@ void	*iter_tracked_mem(t_mem *m, size_t limit, t_buf *b, size_t *bytes)
 		buf_s(b, " : ");
 		*bytes += get_len(m);
 		buf_s(b, len(s, get_len(m)));
-		buf_s(b, " octets");
+		buf_s(b, " octets\n");
 		m = next_alloc(m);
 	}
 	return (m);
@@ -95,25 +96,29 @@ void			show_alloc_mem()
 		return (err(NO_ENV));
 
 	bytes = 0;
+
 	sort_alloc(g_m.tracked);
 
 	buf_init(&b, STDOUT_FILENO);
 
 	buf_s(&b, "TINY : ");
 	buf_s(&b, addr(s, g_m.pre_alloc));
+	buf_c(&b, '\n');
 	m = iter_tracked_mem(g_m.tracked, TINY, &b, &bytes);
 
 	buf_s(&b, "SMALL : ");
 	buf_s(&b, addr(s, g_m.pre_alloc + TINY_LEN));
+	buf_c(&b, '\n');
 	m = iter_tracked_mem(m, SMALL, &b, &bytes);
 
 	buf_s(&b, "LARGE : ");
 	buf_s(&b, addr(s, g_m.pre_alloc + PRE_ALLOC_LEN));
+	buf_c(&b, '\n');
 	iter_tracked_mem(m, (size_t)-1, &b, &bytes);
 
 	buf_s(&b, "Total : ");
 	buf_s(&b, len(s, bytes));
-	buf_s(&b, "octets");
+	buf_s(&b, " octets\n");
 
 	buf_reset(&b);
 }

@@ -6,7 +6,7 @@
 /*   By: lportay <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/25 18:55:15 by lportay           #+#    #+#             */
-/*   Updated: 2019/01/27 20:40:40 by lportay          ###   ########.fr       */
+/*   Updated: 2019/01/29 12:26:11 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static t_mem	*last_alloc(t_mem *m)
 {
 	t_mem *a;
 
-	while ((a = next_alloc(m)) != NULL)
+	while (get_val(a = next_alloc(m)) != NULL)
 		m = a;
 	return (m);
 }
@@ -88,10 +88,8 @@ static void	swap_mem(void *iter, void *next)
 
 	i = get_val(iter);
 	l = get_len(iter);
-
 	set_val(iter, get_val(next));
 	set_len(iter, get_len(next));
-
 	set_val(next, i);
 	set_len(next, l);
 }
