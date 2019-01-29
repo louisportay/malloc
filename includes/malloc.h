@@ -6,7 +6,7 @@
 /*   By: lportay <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/21 14:36:25 by lportay           #+#    #+#             */
-/*   Updated: 2019/01/28 19:53:40 by lportay          ###   ########.fr       */
+/*   Updated: 2019/01/29 14:43:17 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@
 #include <unistd.h>
 #include <stdio.h>//
 #include <assert.h>//
+#include <pthread.h>
 
 #include "bridge.h"
 #include "buf.h"
@@ -51,13 +52,15 @@
 #define GET_LEN(M)		*((size_t *)M)
 //
 
-// s -> size
-// rs -> real size
+#define PROT PROT_READ | PROT_WRITE
+#define MAP MAP_PRIVATE | MAP_ANON
+
+//
 #define DEBUG printf("DEBUG\n")
-#define DUMP_MEM(M) printf("%p\n", M)
-#define DM(M) printf("%p\n", M)
+#define P(M) printf("%p\n", M)
 #define DUMP_MEM_BR(S, M) printf("%s %p\n", S, M)
 #define LEN(L) printf("%lu\n", L)
+//
 
 #define PRE_ALLOC_LEN 0xC99000
 //	(2 << 9 + 2 << 16) * 100
@@ -91,12 +94,21 @@ struct s_mem
 	t_mem	*tracked;
 };
 
-extern struct s_mem g_m;
+extern struct s_mem		g_m;
+extern pthread_mutex_t	g_lock;
+
+/*
+** Public API
+*/
 
 void	free(void *ptr);
 void	*malloc(size_t size);
 void	*realloc(void *ptr, size_t size);
-//void	*calloc(size_t count, size_t size);
+void	*calloc(size_t count, size_t size);
+
+/*
+** Internal API
+*/
 
 void	set_prev(t_mem *m, void *v);
 t_mem	*get_prev(t_mem *m);

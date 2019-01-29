@@ -6,7 +6,7 @@
 /*   By: lportay <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/23 18:29:34 by lportay           #+#    #+#             */
-/*   Updated: 2019/01/28 17:24:56 by lportay          ###   ########.fr       */
+/*   Updated: 2019/01/29 14:33:06 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ void	free(void *ptr)
 {
 	size_t l;
 
-	if (!ptr)
+	if (!ptr || g_m.pre_alloc == NULL)
 		return ;
 	ptr -= sizeof(size_t);
 
