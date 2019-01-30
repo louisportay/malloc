@@ -6,7 +6,7 @@
 /*   By: lportay <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/25 15:52:59 by lportay           #+#    #+#             */
-/*   Updated: 2019/01/29 12:22:09 by lportay          ###   ########.fr       */
+/*   Updated: 2019/01/30 10:36:43 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ void			show_alloc_mem()
 	if (!getenv("MallocTrackMemory") || g_m.tracked == NULL)
 		return (err(NO_ENV));
 
+	pthread_mutex_lock(&g_lock);
 	bytes = 0;
 
 	sort_alloc(g_m.tracked);
@@ -121,4 +122,5 @@ void			show_alloc_mem()
 	buf_s(&b, " octets\n");
 
 	buf_reset(&b);
+	pthread_mutex_unlock(&g_lock);
 }

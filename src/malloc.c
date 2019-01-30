@@ -6,7 +6,7 @@
 /*   By: lportay <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 15:00:57 by lportay           #+#    #+#             */
-/*   Updated: 2019/01/29 14:52:14 by lportay          ###   ########.fr       */
+/*   Updated: 2019/01/30 10:55:14 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,14 +89,14 @@ void	*malloc(size_t size)
 {
 	void	*r;
 
-	//ca marche pas
-	pthread_mutex_init(&g_lock, NULL);
 	pthread_mutex_lock(&g_lock);
-	sleep(3);
 	if (g_m.pre_alloc == NULL)
 	{
 		if (alloc_mem() == -1)
+		{
+			pthread_mutex_unlock(&g_lock);
 			return (NULL);
+		}
 		init_mem(g_m.tiny);
 		g_m.small = get_next(g_m.tiny);
 	}
@@ -121,12 +121,20 @@ void	*malloc(size_t size)
 
 int main(void)
 {
-	pthread_t tid[2];
-
-	pthread_create(&(tid[0]), NULL, (void *(*)(void *))&malloc, NULL);
-	pthread_create(&(tid[1]), NULL, (void *(*)(void *))&malloc, NULL);
-	pthread_join(tid[0], NULL); 
-    pthread_join(tid[1], NULL); 
+//	pthread_t tid[5];
+//
+//	pthread_mutex_init(&g_lock, NULL);
+//	pthread_create(&(tid[0]), NULL, (void *(*)(void *))&malloc, NULL);
+//	pthread_create(&(tid[1]), NULL, (void *(*)(void *))&malloc, NULL);
+//	pthread_create(&(tid[2]), NULL, (void *(*)(void *))&malloc, NULL);
+//	pthread_create(&(tid[3]), NULL, (void *(*)(void *))&malloc, NULL);
+//	pthread_create(&(tid[4]), NULL, (void *(*)(void *))&malloc, NULL);
+//	pthread_join(tid[0], NULL);
+//    pthread_join(tid[1], NULL);
+//    pthread_join(tid[2], NULL);
+//    pthread_join(tid[3], NULL);
+//    pthread_join(tid[4], NULL);
+//	pthread_mutex_destroy(&g_lock);
 //	void *s = malloc(21);
 //	P(s);
 //	void *p = calloc(21, 42);

@@ -6,7 +6,7 @@
 /*   By: lportay <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/21 14:36:25 by lportay           #+#    #+#             */
-/*   Updated: 2019/01/29 14:43:17 by lportay          ###   ########.fr       */
+/*   Updated: 2019/01/30 10:34:31 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ void	free(void *ptr);
 void	*malloc(size_t size);
 void	*realloc(void *ptr, size_t size);
 void	*calloc(size_t count, size_t size);
+void	show_alloc_mem();
 
 /*
 ** Internal API
@@ -128,10 +129,9 @@ void	*large_alloc(t_mem **mem, size_t s);
 ** MallocTrackMemory API
 */
 
-#define GET_VAL(M)		*(void **)(M + (sizeof(void *) * 3));
-#define SET_VAL(M, V)	*(void **)(M + (sizeof(void *) * 3)) = V;
+#define GET_VAL(M)		*(void **)(M + (sizeof(void *)));
+#define SET_VAL(M, V)	*(void **)(M + (sizeof(void *))) = V;
 
-void	show_alloc_mem();
 void	set_val(t_mem *m, t_mem *v);
 t_mem	*get_val(t_mem *m);
 t_mem	*next_alloc(t_mem *m);

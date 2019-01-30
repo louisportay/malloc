@@ -6,7 +6,7 @@
 /*   By: lportay <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/23 18:29:34 by lportay           #+#    #+#             */
-/*   Updated: 2019/01/29 14:33:06 by lportay          ###   ########.fr       */
+/*   Updated: 2019/01/30 10:31:20 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,7 @@ void	free(void *ptr)
 
 	if (!ptr || g_m.pre_alloc == NULL)
 		return ;
+	pthread_mutex_lock(&g_lock);
 	ptr -= sizeof(size_t);
 
 	if (getenv("MallocTrackMemory") && g_m.tracked)
@@ -138,4 +139,5 @@ void	free(void *ptr)
 		release_mem(&g_m.small, ptr);
 	else
 		release_large(&g_m.large, ptr);
+	pthread_mutex_unlock(&g_lock);
 }
