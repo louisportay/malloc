@@ -6,7 +6,7 @@
 /*   By: lportay <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/23 18:29:34 by lportay           #+#    #+#             */
-/*   Updated: 2019/02/01 10:25:49 by lportay          ###   ########.fr       */
+/*   Updated: 2019/02/01 16:02:48 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,23 +34,23 @@ static void	handle_end_block(t_mem *m, t_mem *p)
 
 void	release_mem(t_mem **mem, t_mem *p)
 {
-	t_mem	*m;
+	t_mem	*n;
 	t_mem	*prev;
 
-	m = *mem;
-	while (m && p > m)
-		m = get_next(m);
-	if (!m)
+	n = *mem;
+	while (n && p > n)
+		n = get_next(n);
+	if (!n)
 		return (handle_end_block(*mem, p));
 
-	prev = get_prev(m);
-	if (soft_defragment(prev, p, m) == 0)
+	prev = get_prev(n);
+	if (soft_defragment(prev, p, n) == 0)
 	{
 		if (prev)
 			set_next(prev, p);
 		set_prev(p, prev);
-		set_prev(m, p);
-		set_next(p, m);
+		set_prev(n, p);
+		set_next(p, n);
 	}
 	if (p < *mem)
 		*mem = p;

@@ -6,7 +6,7 @@
 #    By: lportay <lportay@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2019/02/01 10:30:16 by lportay          ###   ########.fr        #
+#    Updated: 2019/02/01 14:41:42 by lportay          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -83,7 +83,7 @@ $(NAME): $(LIBDIR)$(LIB) $(OBJ)
 	@echo $(GREEN)$(NAME)" Successfully created"$(RESET)
 	@ln -fs $(NAME) $(SYMLINK)
 
-exec:  $(LIBDIR)$(LIB) $(OBJ)
+exec:  $(NAME) $(LIBDIR)$(LIB) $(OBJ)
 	$(CC) $(CFLAGS) -o exec $(OBJ) -L$(LIBDIR) -lft
 	@echo $(GREEN)" exec Successfully created"$(RESET)
 

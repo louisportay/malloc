@@ -6,7 +6,7 @@
 /*   By: lportay <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/21 14:36:25 by lportay           #+#    #+#             */
-/*   Updated: 2019/02/01 10:14:16 by lportay          ###   ########.fr       */
+/*   Updated: 2019/02/01 16:05:45 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,9 @@
 #define MAP 	MAP_PRIVATE | MAP_ANON
 
 #define D printf("DEBUG\n")//
-#define P(M) printf("%p\n", M)//
-#define DUMP_MEM_BR(S, M) printf("%s %p\n", S, M)//
-#define LEN(L) printf("%lu\n", L)//
-
+#include <string.h>//
+#define LEN(L) len(s, L); write(1, s, strlen(s)); write(1, "\n", 1)
+#define PTR(P) addr(s, P); write(1, s, strlen(s)); write(1, "\n", 1)
 
 /*
 ** HEADER_SIZE represents the size necessary to store the block length
@@ -71,8 +70,8 @@
 
 /*
 ** PRE_ALLOC_LEN asks for SMALL_LEN + TINY_LEN memory (153 pages)
-** SMALL_LEN -> 128 pages
-** TINY_LEN => 25 pages
+** SMALL_LEN -> 128 pages (100 allocations SMALL)
+** TINY_LEN => 25 pages (128 allocations TINY)
 */
 
 #define PRE_ALLOC_LEN 0xCA0000
@@ -81,6 +80,8 @@
 
 /*
 ** The two maximum sizes for each zone
+** TINY -> 1024
+** SMALL -> 1310172
 ** LARGE is virtually unlimited
 */
 
@@ -88,10 +89,10 @@
 #define TINY 0x400
 
 /*
-** 1024 allocations tracked, 4 pages asked
+** 2048 allocations tracked, 8 pages asked
 */
 
-#define TRK_LEN 0x4000
+#define TRK_LEN 0x8000
 
 /*
 ** The maximum size for pooling large blocks
@@ -122,6 +123,7 @@ void	free(void *ptr);
 void	*malloc(size_t size);
 void	*realloc(void *ptr, size_t size);
 void	*calloc(size_t count, size_t size);
+void	show_free_mem();
 void	show_alloc_mem();
 
 /*
@@ -177,4 +179,6 @@ void	test_perfect_fit_large();
 void	test_realloc();
 void	test_calloc();
 
+char	*len(char *s, size_t len);//
+char	*addr(char *s, void *ptr);//
 #endif

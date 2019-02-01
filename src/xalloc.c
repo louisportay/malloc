@@ -6,11 +6,23 @@
 /*   By: lportay <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/28 17:36:23 by lportay           #+#    #+#             */
-/*   Updated: 2019/02/01 10:39:00 by lportay          ###   ########.fr       */
+/*   Updated: 2019/02/01 16:13:18 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "malloc.h"
+
+/*
+** SCHEME FOR PTR HEADERS IN REALLOC
+**
+** 'ptr' in params
+**
+** L  P
+** ===|============
+**
+**
+**
+*/
 
 void	*realloc(void *ptr, size_t size)
 {
@@ -36,7 +48,7 @@ void	*realloc(void *ptr, size_t size)
 	if (!(r = malloc(size)))
 		return (NULL);
 	pthread_mutex_lock(&g_lock);
-	ft_memmove(r, ptr, get_len(ptr - HEADER_SIZE));
+	ft_memmove(r, ptr, get_len(ptr - HEADER_SIZE) - HEADER_SIZE);
 	pthread_mutex_unlock(&g_lock);
 	free(ptr);
 	return (r);

@@ -6,7 +6,7 @@
 /*   By: lportay <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 15:00:57 by lportay           #+#    #+#             */
-/*   Updated: 2019/02/01 10:50:06 by lportay          ###   ########.fr       */
+/*   Updated: 2019/02/01 16:09:38 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,9 +116,4 @@ void	*malloc(size_t size)
 	pthread_mutex_unlock(&g_lock);
 
 	return (!r ? NULL : r + HEADER_SIZE);
-}
-
-int main(void)
-{
-	return (0);
 }
