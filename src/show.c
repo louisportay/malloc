@@ -6,20 +6,11 @@
 /*   By: lportay <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/25 15:52:59 by lportay           #+#    #+#             */
-/*   Updated: 2019/01/30 10:36:43 by lportay          ###   ########.fr       */
+/*   Updated: 2019/01/31 17:41:11 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "malloc.h"
-
-#define NO_ENV 1
-
-static void	err(char err)
-{
-	if (err == NO_ENV)
-		write(STDERR_FILENO, "MallocTrackMemory environment variable not set\n",
-				47);
-}
 
 /*
 ** Take a string (s) and an adress (ptr) as parameters and store
@@ -91,9 +82,6 @@ void			show_alloc_mem()
 	t_mem	*m;
 	size_t	bytes;
 	char	s[32];
-
-	if (!getenv("MallocTrackMemory") || g_m.tracked == NULL)
-		return (err(NO_ENV));
 
 	pthread_mutex_lock(&g_lock);
 	bytes = 0;

@@ -6,7 +6,7 @@
 #    By: lportay <lportay@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2019/01/28 19:53:51 by lportay          ###   ########.fr        #
+#    Updated: 2019/02/01 10:30:16 by lportay          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ vpath %.c $(SRCDIR)
 vpath %.h includes/
 
 CFLAGS= -Wall -Wextra -Werror $(INCLUDE)
-DEBUG=sanitize
+DEBUG=yes
 OPT=LIB
 ARCH:= $(shell uname)
 
@@ -31,7 +31,7 @@ endif
 ifeq ($(DEBUG), yes)
 	CFLAGS+= -g3
 else ifeq ($(DEBUG), prod)
-	CFLAGS+= -O3
+	CFLAGS+= -O3 -DNDEBUG
 else ifeq ($(DEBUG), sanitize)
 	CFLAGS+= -g3 -fsanitize=address
 endif
@@ -42,17 +42,22 @@ INCLUDE=\
 -I$(LIBDIR)is\
 -I$(LIBDIR)buf\
 -I$(LIBDIR)mem\
+-I$(LIBDIR)maths\
 
 HEADERS= malloc.h\
 
 SRC= malloc.c\
 	 extract.c\
+	 defragment.c\
 	 large.c\
-	 macro.c\
+	 macro_0.c\
+	 macro_1.c\
+	 macro_2.c\
 	 free.c\
 	 show.c\
 	 track.c\
 	 xalloc.c\
+	 #test.c\
 
 OBJDIR= obj
 OBJ= $(addprefix $(OBJDIR)/, $(SRC:%.c=%.o))

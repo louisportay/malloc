@@ -6,60 +6,15 @@
 /*   By: lportay <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/23 18:29:34 by lportay           #+#    #+#             */
-/*   Updated: 2019/01/30 10:31:20 by lportay          ###   ########.fr       */
+/*   Updated: 2019/02/01 10:25:49 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "malloc.h"
 
 /*
-** DEFRAGMENTATION SCHEME
-**
-** |== X ==| -> free block
-** |xxxxxxx| -> busy block
-**
-** |== prev ==| |== p ==| |== next ==| -> |=========== prev =============|
-**
-** |= prev =| |xxx| |= p =| |= next =| -> |= prev =| |xxx| |===== p =====|
-**
-** |= prev =| |= p =| |xxx| |= next =| -> |=== prev ====| |xxx| |= next =|
+** The allocated block is localized at the very end of the freelist
 */
-
-static int	defragment_next(t_mem *prev, t_mem *p, t_mem *next)
-{
-	t_mem *n;
-
-	add_len(p, get_len(next));
-	set_prev(p, prev);
-	n = get_next(next);
-	set_next(p, n);
-	if (n)
-		set_prev(n, p);
-	return (1);
-}
-
-int			soft_defragment(t_mem *prev, t_mem *p, t_mem *next)
-{
-	t_mem *n;
-
-	if (prev != NULL && adj_mem(prev, p))
-	{
-		if (adj_mem(p, next))
-		{
-			add_len(prev, get_len(p) + get_len(next));
-			n = get_next(next);
-			set_next(prev, n);
-			if (n)
-				set_prev(n, prev);
-			return (1);
-		}
-		add_len(prev, get_len(p));
-		return (1);
-	}
-	else if (adj_mem(p, next))
-		return (defragment_next(prev, p, next));
-	return (0);
-}
 
 static void	handle_end_block(t_mem *m, t_mem *p)
 {
@@ -89,7 +44,6 @@ void	release_mem(t_mem **mem, t_mem *p)
 		return (handle_end_block(*mem, p));
 
 	prev = get_prev(m);
-
 	if (soft_defragment(prev, p, m) == 0)
 	{
 		if (prev)
@@ -124,13 +78,11 @@ void	free(void *ptr)
 {
 	size_t l;
 
-	if (!ptr || g_m.pre_alloc == NULL)
+	if (!ptr || g_m.pre_alloc == NULL || check_alloc(ptr - HEADER_SIZE) == -1)
 		return ;
 	pthread_mutex_lock(&g_lock);
-	ptr -= sizeof(size_t);
-
-	if (getenv("MallocTrackMemory") && g_m.tracked)
-		pop_alloc(g_m.tracked, ptr);
+	ptr -= HEADER_SIZE;
+	pop_alloc(g_m.tracked, ptr);
 
 	l = get_len(ptr);
 	if (l <= TINY)

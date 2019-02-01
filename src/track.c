@@ -6,16 +6,11 @@
 /*   By: lportay <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/25 18:55:15 by lportay           #+#    #+#             */
-/*   Updated: 2019/01/29 12:26:11 by lportay          ###   ########.fr       */
+/*   Updated: 2019/02/01 10:33:54 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "malloc.h"
-
-t_mem	*next_alloc(t_mem *m)
-{
-	return (m + (sizeof(size_t) << 1));
-}
 
 static t_mem	*last_alloc(t_mem *m)
 {
@@ -26,14 +21,18 @@ static t_mem	*last_alloc(t_mem *m)
 	return (m);
 }
 
-void	set_val(t_mem *m, t_mem *v)
+int		check_alloc(void *p)
 {
-	*(void **)(m + (sizeof(void *))) = v;
-}
+	t_mem *iter;
 
-t_mem	*get_val(t_mem *m)
-{
-	return (*(void **)(m + (sizeof(void *))));
+	iter = g_m.tracked;
+	while (iter != (g_m.tracked + TRK_LEN) && get_val(iter) != p)
+		iter = next_alloc(iter);
+	if (iter == g_m.tracked + TRK_LEN)
+		return (-1);
+	else if (get_val(iter) == p)
+		return (0);
+	return (-1);
 }
 
 /*
@@ -49,7 +48,8 @@ void	push_alloc(t_mem *busy, t_mem *m)
 		iter = next_alloc(iter);
 	if (iter == busy + TRK_LEN)
 	{
-		write(STDERR_FILENO, "No space left to track memory allocations.", 42);
+		write(STDERR_FILENO, "No space left to track memory allocation.\n",
+				42);
 		return ;
 	}
 	set_val(iter, m);
