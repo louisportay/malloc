@@ -6,7 +6,7 @@
 /*   By: lportay <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/24 15:02:44 by lportay           #+#    #+#             */
-/*   Updated: 2019/01/30 12:35:51 by lportay          ###   ########.fr       */
+/*   Updated: 2019/02/04 12:17:57 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,17 @@
 
 void	set_len(t_mem *m, size_t len)
 {
-	*(size_t *)m = len;
+	*((size_t *)(m)) = len;
 }
 
 void	add_len(t_mem *m, size_t len)
 {
-	*(size_t *)m += len;
+	*((size_t *)(m)) += len;
 }
 
 size_t	get_len(t_mem *m)
 {
-	return (*((size_t *)m));
+	return (*((size_t *)(m)));
 }
 
 /*

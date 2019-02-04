@@ -6,7 +6,7 @@
 /*   By: lportay <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/21 14:36:25 by lportay           #+#    #+#             */
-/*   Updated: 2019/02/01 16:05:45 by lportay          ###   ########.fr       */
+/*   Updated: 2019/02/04 12:43:29 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@
 ** MIN_ALLOC is the minimum allocation to store the 'prev' and 'next' pointer
 */
 
-#define HEADER_SIZE 8
+#define HEADER_SIZE 16
 #define MIN_ALLOC 16
 
 /*
@@ -89,10 +89,10 @@
 #define TINY 0x400
 
 /*
-** 2048 allocations tracked, 8 pages asked
-*/
+** 4096 allocations tracked, 10 pages asked
+/
 
-#define TRK_LEN 0x8000
+#define TRK_LEN 0x10000
 
 /*
 ** The maximum size for pooling large blocks

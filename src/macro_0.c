@@ -6,7 +6,7 @@
 /*   By: lportay <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/24 15:02:44 by lportay           #+#    #+#             */
-/*   Updated: 2019/01/31 19:40:05 by lportay          ###   ########.fr       */
+/*   Updated: 2019/02/01 16:35:15 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,20 +21,20 @@
 
 void	set_prev(t_mem *m, void *v)
 {
-	*(void **)(m + sizeof(void *)) = v;
+	*(void **)(m + HEADER_SIZE) = v;
 }
 
 t_mem	*get_prev(t_mem *m)
 {
-	return (*(void **)(m + sizeof(void *)));
+	return (*(void **)(m + HEADER_SIZE));
 }
 
 void	set_next(t_mem *m, void *v)
 {
-	*(void **)(m + (sizeof(void *) << 1)) = v;
+	*(void **)(m + HEADER_SIZE + sizeof(void *)) = v;
 }
 
 t_mem	*get_next(t_mem *m)
 {
-	return (*(void **)(m + (sizeof(void *) << 1)));
+	return (*(void **)(m + HEADER_SIZE + (sizeof(void *))));
 }

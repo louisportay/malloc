@@ -6,7 +6,7 @@
 /*   By: lportay <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/25 15:52:59 by lportay           #+#    #+#             */
-/*   Updated: 2019/02/01 16:11:48 by lportay          ###   ########.fr       */
+/*   Updated: 2019/02/04 12:32:43 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,12 +94,13 @@ void	show_free_mem()
 {
 	t_buf	b;
 
-	pthread_mutex_lock(&g_lock);
+	//pthread_mutex_lock(&g_lock);
 	buf_init(&b, STDOUT_FILENO);
 	iter_free_mem(&b, g_m.tiny);
+	iter_free_mem(&b, g_m.small);
 	iter_free_mem(&b, g_m.large);
 	buf_reset(&b);
-	pthread_mutex_unlock(&g_lock);
+	//pthread_mutex_unlock(&g_lock);
 }
 
 /*
@@ -117,7 +118,7 @@ void			show_alloc_mem()
 
 	if (g_m.pre_alloc == NULL)
 		return ;
-	pthread_mutex_lock(&g_lock);
+	//pthread_mutex_lock(&g_lock);
 	total[0] = 0;
 	total[1] = 0;
 
@@ -147,5 +148,5 @@ void			show_alloc_mem()
 	buf_s(&b, " allocations\n");
 
 	buf_reset(&b);
-	pthread_mutex_unlock(&g_lock);
+	//pthread_mutex_unlock(&g_lock);
 }

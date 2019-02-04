@@ -6,7 +6,7 @@
 /*   By: lportay <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/23 18:29:34 by lportay           #+#    #+#             */
-/*   Updated: 2019/02/01 16:02:48 by lportay          ###   ########.fr       */
+/*   Updated: 2019/02/04 12:46:37 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,9 +78,14 @@ void	free(void *ptr)
 {
 	size_t l;
 
-	if (!ptr || g_m.pre_alloc == NULL || check_alloc(ptr - HEADER_SIZE) == -1)
+	if (!ptr || g_m.pre_alloc == NULL)
 		return ;
-	pthread_mutex_lock(&g_lock);
+	//pthread_mutex_lock(&g_lock);
+	if (check_alloc(ptr - HEADER_SIZE) == -1)
+	{
+		//pthread_mutex_unlock(&g_lock);
+		return (NULL);
+	}
 	ptr -= HEADER_SIZE;
 	pop_alloc(g_m.tracked, ptr);
 
@@ -91,5 +96,5 @@ void	free(void *ptr)
 		release_mem(&g_m.small, ptr);
 	else
 		release_large(&g_m.large, ptr);
-	pthread_mutex_unlock(&g_lock);
+	//pthread_mutex_unlock(&g_lock);
 }

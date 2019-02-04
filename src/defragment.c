@@ -6,7 +6,7 @@
 /*   By: lportay <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/30 12:25:42 by lportay           #+#    #+#             */
-/*   Updated: 2019/02/01 16:01:29 by lportay          ###   ########.fr       */
+/*   Updated: 2019/02/04 12:38:39 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,21 +45,13 @@ static int	defragment_next_blk(t_mem *prev, t_mem *p, t_mem *next)
 ** |= prev =| |= p =| |xxx| |= next =| -> |=== prev ====| |xxx| |= next =|
 */
 
-int		same_zone(t_mem *p1, t_mem *p2)
-{
-	if (p1 < g_m.pre_alloc + TINY_LEN && p2 >= g_m.pre_alloc + TINY_LEN)
-		return (0);
-	else
-		return (1);
-}
-
 int		soft_defragment(t_mem *prev, t_mem *p, t_mem *next)
 {
 	t_mem *n;
 
-	if (prev != NULL && adj_mem(prev, p) && same_zone(prev, p) == 1)
+	if (prev != NULL && adj_mem(prev, p))
 	{
-		if (adj_mem(p, next) && same_zone(p, next) == 1)
+		if (adj_mem(p, next))
 		{
 			add_len(prev, get_len(p) + get_len(next));
 			n = get_next(next);
@@ -71,8 +63,7 @@ int		soft_defragment(t_mem *prev, t_mem *p, t_mem *next)
 		add_len(prev, get_len(p));
 		return (1);
 	}
-	else if (adj_mem(p, next) && same_zone(p, next) == 1)
+	else if (adj_mem(p, next))
 		return (defragment_next_blk(prev, p, next));
 	return (0);
 }
-
