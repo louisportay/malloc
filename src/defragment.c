@@ -6,7 +6,7 @@
 /*   By: lportay <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/30 12:25:42 by lportay           #+#    #+#             */
-/*   Updated: 2019/02/04 12:38:39 by lportay          ###   ########.fr       */
+/*   Updated: 2019/02/04 16:00:36 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static int	defragment_next_blk(t_mem *prev, t_mem *p, t_mem *next)
 ** |= prev =| |= p =| |xxx| |= next =| -> |=== prev ====| |xxx| |= next =|
 */
 
-int		soft_defragment(t_mem *prev, t_mem *p, t_mem *next)
+int			soft_defragment(t_mem *prev, t_mem *p, t_mem *next)
 {
 	t_mem *n;
 

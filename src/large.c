@@ -6,7 +6,7 @@
 /*   By: lportay <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/24 15:10:53 by lportay           #+#    #+#             */
-/*   Updated: 2019/01/31 11:43:41 by lportay          ###   ########.fr       */
+/*   Updated: 2019/02/04 17:20:17 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static t_mem	*best_fit_large(t_mem *m, size_t len, size_t s)
 {
 	t_mem	*v;
 	size_t	l;
-		
+
 	v = m;
 	m = get_next(m);
 	while (m && (l = get_len(m)) != s)
@@ -73,7 +73,7 @@ t_mem			*get_mem_large(t_mem **mem, size_t s)
 	return (m);
 }
 
-void	*large_alloc(t_mem **mem, size_t s)
+void			*large_alloc(t_mem **mem, size_t s)
 {
 	void *r;
 
@@ -81,10 +81,11 @@ void	*large_alloc(t_mem **mem, size_t s)
 		return (r);
 	else
 	{
-	   r = mmap(g_m.pre_alloc + PRE_ALLOC_LEN, s, PROT, MAP, -1, 0);
-	   if (r == MAP_FAILED)
-		   return (NULL);
-	   set_len(r, s);
-	   return (r);
+		r = mmap(g_m.pre_alloc + PRE_ALLOC_LEN, s,
+				PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANON, -1, 0);
+		if (r == MAP_FAILED)
+			return (NULL);
+		set_len(r, s);
+		return (r);
 	}
 }

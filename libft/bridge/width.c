@@ -6,7 +6,7 @@
 /*   By: lportay <lportay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/17 17:06:16 by lportay           #+#    #+#             */
-/*   Updated: 2019/01/27 20:05:29 by lportay          ###   ########.fr       */
+/*   Updated: 2019/02/04 15:10:54 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,12 @@ unsigned	lwidth(long nb)
 	return (width);
 }
 
-unsigned base_width(size_t nb, unsigned char base)
+unsigned	base_width(size_t nb, unsigned char base)
 {
 	unsigned				width;
 
 	width = 1;
 	while ((nb /= base) != 0)
 		width++;
-	return (width);	
+	return (width);
 }

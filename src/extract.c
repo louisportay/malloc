@@ -6,7 +6,7 @@
 /*   By: lportay <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/24 15:04:50 by lportay           #+#    #+#             */
-/*   Updated: 2019/02/01 10:16:21 by lportay          ###   ########.fr       */
+/*   Updated: 2019/02/04 16:01:01 by lportay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,12 @@ void	shorten(t_mem *m, size_t s)
 	len = get_len(m);
 	prev = get_prev(m);
 	next = get_next(m);
-
 	set_len(m, s);
 	set_next(m, m + s);
-
 	m += s;
 	set_len(m, len - s);
 	set_prev(m, prev);
 	set_next(m, next);
-
 	if (prev)
 		set_next(prev, m);
 	if (next)

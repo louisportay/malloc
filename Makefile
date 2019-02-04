@@ -6,7 +6,7 @@
 #    By: lportay <lportay@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2019/02/04 13:11:15 by lportay          ###   ########.fr        #
+#    Updated: 2019/02/04 16:21:55 by lportay          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ vpath %.c $(SRCDIR)
 vpath %.h includes/
 
 CFLAGS= -Wall -Wextra -Werror $(INCLUDE)
-DEBUG=yes
+DEBUG=prod
 OPT=LIB
 ARCH:= $(shell uname)
 
@@ -58,7 +58,8 @@ SRC= malloc.c\
 	 show.c\
 	 track.c\
 	 xalloc.c\
-	 #test.c\
+	 sort.c\
+	 dump.c\
 
 OBJDIR= obj
 OBJ= $(addprefix $(OBJDIR)/, $(SRC:%.c=%.o))
