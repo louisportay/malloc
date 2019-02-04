@@ -6,7 +6,7 @@
 #    By: lportay <lportay@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/04/25 17:01:50 by lportay           #+#    #+#              #
-#    Updated: 2019/02/01 16:36:37 by lportay          ###   ########.fr        #
+#    Updated: 2019/02/04 13:07:03 by lportay          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,22 +39,22 @@ OBJDIR=obj
 #include ft_astr/astr.mk
 #include ft_stdio/stdio.mk
 
-include array/array.mk
+#include array/array.mk
 include bridge/bridge.mk
 include buf/buf.mk
-include hash/hash.mk
-include io/io.mk
+#include hash/hash.mk
+#include io/io.mk
 include is/is.mk
 include mem/mem.mk
-include list/list.mk
-include other/other.mk
-include result/result.mk
-include stack/stack.mk
-include str/str.mk
-include string/string.mk
-include utf/utf.mk
-include vector/vector.mk
-include wcs/wcs.mk
+#include list/list.mk
+#include other/other.mk
+#include result/result.mk
+#include stack/stack.mk
+#include str/str.mk
+#include string/string.mk
+#include utf/utf.mk
+#include vector/vector.mk
+#include wcs/wcs.mk
 include maths/maths.mk
 
 vpath %.c $(SRCDIR)

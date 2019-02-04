@@ -6,7 +6,7 @@
 #    By: lportay <lportay@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/13 10:52:14 by lportay           #+#    #+#              #
-#    Updated: 2019/02/01 14:41:42 by lportay          ###   ########.fr        #
+#    Updated: 2019/02/04 13:11:15 by lportay          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,7 @@ ifeq ($(ARCH), Darwin)
 	CC= clang
 else ifeq ($(ARCH), Linux)
 	CC=gcc-8
+	CFLAGS+= -fPIC
 endif
 
 ifeq ($(DEBUG), yes)
